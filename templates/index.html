@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Turnos - Pantalla</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #222; color: white; }
+        h1 { font-size: 4em; margin-top: 30px; }
+        .turno { font-size: 3em; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Hospital Universitario San Jorge</h1>
+    <div id="turnos"></div>
+
+    <script>
+        async function cargarTurnos() {
+            const res = await fetch('/api/turnos');
+            const turnos = await res.json();
+            const contenedor = document.getElementById('turnos');
+            contenedor.innerHTML = '';
+            turnos.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'turno';
+                div.textContent = t;
+                contenedor.appendChild(div);
+            });
+        }
+
+        // Actualiza cada 5 segundos
+        setInterval(cargarTurnos, 5000);
+        cargarTurnos();
+    </script>
+</body>
+</html>

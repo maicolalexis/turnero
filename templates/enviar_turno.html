@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Turno</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        input, button { font-size: 1.2em; padding: 10px; margin: 10px; }
+        #mensaje { margin-top: 20px; color: green; }
+    </style>
+</head>
+<body>
+    <h1>Enviar Turno</h1>
+    <input type="text" id="turno" placeholder="Ej: Cita Médica 1">
+    <button onclick="enviarTurno()">Enviar</button>
+
+    <div id="mensaje"></div>
+
+    <script>
+        function enviarTurno() {
+            const turno = document.getElementById("turno").value;
+            if (!turno) {
+                alert("Por favor ingresa un turno");
+                return;
+            }
+
+            fetch('http://172.16.118.83:5000/api/agregar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ turno: turno })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("mensaje").innerText = `✅ Turno "${turno}" enviado`;
+                document.getElementById("turno").value = "";
+            })
+            .catch(err => {
+                console.error(err);
+                document.getElementById("mensaje").innerText = "❌ Error al enviar el turno";
+            });
+        }
+    </script>
+
+</body>
+</html>
